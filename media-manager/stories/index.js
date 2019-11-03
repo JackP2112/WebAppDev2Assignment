@@ -3,8 +3,9 @@ import { storiesOf } from '@storybook/react';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 
 import MediaItem from '../src/components/mediaItem/';
+import MainView from '../src/components/mainView/';
 
-const sample = {
+const samplebook = {
   type: 'book',
   title: '20,000 Leagues Under the Sea',
   releaseDate: new Date(1870, 6),
@@ -14,7 +15,45 @@ const sample = {
   comments: ['get hard copy'],
   itemStatus: 1 //-1 to read, 0 in progress, 1 completed
 }
+
+const samplemovie = {
+  type: 'movie',
+  title: 'The Thing',
+  releaseDate: new Date(1982, 6, 25),
+  creators: {director: 'John Carpenter'},
+  genres: ['science fiction','horror'],
+  image: 'https://artfiles.alphacoders.com/995/99557.jpg',
+  comments: ['on netflix'],
+  itemStatus: 1 //-1 to read, 0 in progress, 1 completed
+}
+
+const sampleseries = {
+  type: 'series',
+  title: 'Seinfeld',
+  releaseDate: new Date(1982, 6, 25),
+  creators: {creator: ['Larry David', 'Jerry Seinfeld']},
+  genres: ['sitcom'],
+  image: 'https://s1.ibtimes.com/sites/www.ibtimes.com/files/styles/v2_article_large/public/2014/07/01/seinfeld.jpg?itok=KayYkMVa',
+  comments: [],
+  itemStatus: 0 //-1 to read, 0 in progress, 1 completed
+}
+
+const samplemusic = {
+  type: 'music',
+  title: 'Station to Station',
+  releaseDate: new Date(1976, 1, 23),
+  creators: {artist: 'David Bowie'},
+  genres: ['art rock', 'funk rock', 'soul', 'R&B', 'space rock'],
+  image: 'https://upload.wikimedia.org/wikipedia/en/9/97/Station_to_Station_cover.jpg',
+  comments: [],
+  itemStatus: 1 //-1 to read, 0 in progress, 1 completed
+}
  
 storiesOf('Media Manager App/Media Item', module).add('default', () => (
-  <MediaItem item={sample}/>
+  <MediaItem item={samplebook}/>
 ));
+
+storiesOf('Media Manager App/Main View', module).add('default', () => {
+  const samples = [samplemovie, samplebook, samplemusic, sampleseries, samplebook, samplemovie, samplemusic, samplebook, samplemusic]
+  return <MainView items={samples}/>
+});
