@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import MediaItem from '../mediaItem/'
+import React from 'react';
+import MediaItem from '../mediaItem/';
+import { Container, Row } from 'react-bootstrap';
 
-class MainView extends Component {
+const MainView = props => {
 
-  render(){
-    const mediaItems = this.props.items.map(m => (
-      <MediaItem item={m} />
-    ));
-    return (
-      <div className='container-fluid'>
-        <div className='row align-items-end'>{mediaItems}</div>
-      </div>
-    );
-  }
+  const mediaItems = props.items.map(m => (
+    <MediaItem item={m} />
+  ));
+
+  return (
+    <Container fluid>
+      <Row className='align-items-end'>{mediaItems}</Row>
+    </Container>
+  );
 }
 
 export default MainView;

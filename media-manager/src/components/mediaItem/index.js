@@ -1,4 +1,5 @@
 import React from 'react';
+import { Card, Col } from 'react-bootstrap';
 
 const MediaItem = props => {
 
@@ -37,15 +38,15 @@ const MediaItem = props => {
 
 
   return (
-    <div className='col-6 col-sm-4 col-md-3 col-lg-2 mb-3'>
-      <div className='card'>
-        <img src={props.item.image} className='card-img-top' />
-        <div className='card-body border-top'>
-          <h5 className='card-title'>{props.item.title}</h5>
-          <h6 className='card-subtitle text-muted'>{`${icon} ${creatorTitle}: ${creatorName}`}</h6>
-        </div>
-      </div>
-    </div>
+    <Col xs={6} sm={4} md={3} lg={2} className='mb-3'>
+      <Card>
+        <Card.Img variant='top' src={props.item.image} />
+        <Card.Body className='border-top'>
+          <Card.Title>{props.item.title}</Card.Title>
+          <Card.Subtitle className='text-muted'>{`${icon} ${creatorTitle}: ${creatorName}`}</Card.Subtitle>
+        </Card.Body>
+      </Card>
+    </Col>
   );
 }
 
