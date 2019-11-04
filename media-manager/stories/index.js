@@ -4,6 +4,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.css';
 
 import MediaItem from '../src/components/mediaItem/';
 import MainView from '../src/components/mainView/';
+import SearchBar from '../src/components/searchBar/';
 
 const samplebook = {
   type: 'book',
@@ -24,7 +25,7 @@ const samplemovie = {
   genres: ['science fiction','horror'],
   image: 'https://artfiles.alphacoders.com/995/99557.jpg',
   comments: ['on netflix'],
-  itemStatus: 1 //-1 to read, 0 in progress, 1 completed
+  itemStatus: 1
 }
 
 const sampleseries = {
@@ -35,7 +36,7 @@ const sampleseries = {
   genres: ['sitcom'],
   image: 'https://s1.ibtimes.com/sites/www.ibtimes.com/files/styles/v2_article_large/public/2014/07/01/seinfeld.jpg?itok=KayYkMVa',
   comments: [],
-  itemStatus: 0 //-1 to read, 0 in progress, 1 completed
+  itemStatus: 0
 }
 
 const samplemusic = {
@@ -46,7 +47,7 @@ const samplemusic = {
   genres: ['art rock', 'funk rock', 'soul', 'R&B', 'space rock'],
   image: 'https://upload.wikimedia.org/wikipedia/en/9/97/Station_to_Station_cover.jpg',
   comments: [],
-  itemStatus: 1 //-1 to read, 0 in progress, 1 completed
+  itemStatus: 1
 }
  
 storiesOf('Media Manager App/Media Item', module).add('default', () => (
@@ -57,3 +58,7 @@ storiesOf('Media Manager App/Main View', module).add('default', () => {
   const samples = [samplemovie, samplebook, samplemusic, sampleseries, samplebook, samplemovie, samplemusic, samplebook, samplemusic]
   return <MainView items={samples}/>
 });
+
+storiesOf('Media Manager App/SearchBar', module).add('default', () => (
+  <SearchBar />
+));
