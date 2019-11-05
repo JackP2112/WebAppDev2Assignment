@@ -5,6 +5,8 @@ import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import MediaItem from '../src/components/mediaItem/';
 import MainView from '../src/components/mainView/';
 import SearchBar from '../src/components/searchBar/';
+import Toolbar from '../src/components/toolbar/';
+import ExportMenu from '../src/components/exportMenu/';
 
 const samplebook = {
   type: 'book',
@@ -61,4 +63,12 @@ storiesOf('Media Manager App/Main View', module).add('default', () => {
 
 storiesOf('Media Manager App/SearchBar', module).add('default', () => (
   <SearchBar />
+));
+
+storiesOf('Media Manager App/Toolbar', module).add('default', () => (
+  <Toolbar />
+));
+
+storiesOf('Media Manager App/ExportMenu', module).add('default', () => (
+  <ExportMenu />
 ));
