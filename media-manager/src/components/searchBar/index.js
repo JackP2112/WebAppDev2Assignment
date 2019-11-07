@@ -24,7 +24,7 @@ class SearchBar extends Component {
 
   render() {
     return (
-      <Col xs={5} sm={4} lg={3} xl={2} className='vh-100 border pt-3'>
+      <Col xs={3} sm={4} md={3} lg={3} xl={2} className='vh-100 border pt-3 ml-3'>
         <Form.Control type='text' name='text' placeholder='Search...' className='mb-4' onChange={this.handleChange}/>
  
         <Form.Group as={Row}>

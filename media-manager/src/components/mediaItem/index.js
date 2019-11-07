@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, Col } from 'react-bootstrap';
+import { Card, Col, Button } from 'react-bootstrap';
+import './style.css';
 
 const MediaItem = props => {
 
@@ -31,17 +32,16 @@ const MediaItem = props => {
     let creators = creatorName;
     creatorName = '';
     for (let i=0;i<creators.length-1;i++){
-      creatorName += creators[i]+', '
+      creatorName += creators[i]+', ';
     }
-    creatorName += creators.pop()
+    creatorName += creators[creators.length-1];
   }
 
-
   return (
-    <Col xs={6} sm={4} md={3} lg={2} className='mb-3'>
-      <Card>
+    <Col xs={6} sm={6} md={4} lg={3} xl={2} className='mb-3'>
+      <Card onClick={props.onClick}>
         <Card.Img variant='top' src={props.item.image} />
-        <Card.Body className='border-top'>
+        <Card.Body className={`border-top ${props.selected && 'selected'}`}>
           <Card.Title>{props.item.title}</Card.Title>
           <Card.Subtitle className='text-muted'>{`${icon} ${creatorTitle}: ${creatorName}`}</Card.Subtitle>
         </Card.Body>

@@ -29,7 +29,6 @@ class ExportMenu extends Component {
 
   render() {
     return (
-      <div style={this.props.style} className={this.props.className}>
         <Container>
           <Form onSubmit={this.handleSubmit}>
 
@@ -78,7 +77,6 @@ class ExportMenu extends Component {
 
           </Form>
         </Container>
-      </div>
     );
   }
 }

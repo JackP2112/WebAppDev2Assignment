@@ -7,6 +7,7 @@ import MainView from '../src/components/mainView/';
 import SearchBar from '../src/components/searchBar/';
 import Toolbar from '../src/components/toolbar/';
 import ExportMenu from '../src/components/exportMenu/';
+import AddItem from '../src/components/addItem/';
 
 const samplebook = {
   type: 'book',
@@ -52,9 +53,13 @@ const samplemusic = {
   itemStatus: 1
 }
  
-storiesOf('Media Manager App/Media Item', module).add('default', () => (
-  <MediaItem item={samplebook}/>
-));
+storiesOf('Media Manager App/Media Item', module)
+  .add('default', () => (
+    <MediaItem item={samplebook}/>
+  ))
+  .add('selected', () => (
+    <MediaItem item={samplebook} selected={true}/>
+  ));
 
 storiesOf('Media Manager App/Main View', module).add('default', () => {
   const samples = [samplemovie, samplebook, samplemusic, sampleseries, samplebook, samplemovie, samplemusic, samplebook, samplemusic]
@@ -71,4 +76,8 @@ storiesOf('Media Manager App/Toolbar', module).add('default', () => (
 
 storiesOf('Media Manager App/ExportMenu', module).add('default', () => (
   <ExportMenu />
+));
+
+storiesOf('Media Manager App/AddItem', module).add('default', () => (
+  <AddItem />
 ));
