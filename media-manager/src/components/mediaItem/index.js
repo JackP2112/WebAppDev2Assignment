@@ -25,16 +25,20 @@ const MediaItem = props => {
   
   //get creator info
   //get first creator to appear in props
-  let creatorTitle = Object.getOwnPropertyNames(props.item.creators)[0];
-  let creatorName = props.item.creators[creatorTitle];
-  creatorTitle = creatorTitle[0].toUpperCase() + creatorTitle.slice(1).toLowerCase();
-  if (Array.isArray(creatorName)){ //if multiple creator names for same role
-    let creators = creatorName;
+  let [creatorTitle, creatorName] = ['','Unknown'];
+  if(props.item.creators.length > 0){
+    let creator = props.item.creators[0];
+    creatorTitle = creator[0][0].toUpperCase() + creator[0].slice(1).toLowerCase();
     creatorName = '';
-    for (let i=0;i<creators.length-1;i++){
-      creatorName += creators[i]+', ';
+    if (typeof creator[1] === 'string'){ //one name
+      creatorName = creator[1];
     }
-    creatorName += creators[creators.length-1];
+    else { //multiple names
+      for (let i=0;i<creator[1].length-1;i++){
+        creatorName += creator[1][i]+', ';
+      }
+      creatorName += creator[1][creator[1].length-1];
+    }
   }
 
   return (

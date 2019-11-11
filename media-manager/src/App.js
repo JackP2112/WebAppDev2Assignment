@@ -1,23 +1,34 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Navbar } from 'react-bootstrap';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import Toolbar from './components/toolbar/';
 import SearchBar from './components/searchBar/';
 import MainView from './components/mainView/';
+import AddItem from './components/addItem/';
 import './App.scss';
-import localCache from "./localCache";
+import localCache from './localCache';
 import request from "superagent";
 
 class App extends Component {
 
-  state = {
-    selectedItems: [],
-    searchText: '',
-    mediaType: 'all',
-    mediaStatus: 'in progress'
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    console.log("componentDidMount of App");
+    this.state = {
+      isSelecting: false,
+      selectedItems: [],
+      searchText: '',
+      mediaType: 'all',
+      mediaStatus: 'in progress'
+    };
+
+    this.updateFilter = this.updateFilter.bind(this);
+    this.toggleSelecting = this.toggleSelecting.bind(this);
+    this.updateSelected = this.updateSelected.bind(this);
+    this.addItem = this.addItem.bind(this);
+  }
+
+  componentDidMount(){
     request.get("http://localhost:3001/media").end((error, res) => {
       if (res) {
         let media = JSON.parse(res.text);
@@ -40,6 +51,11 @@ class App extends Component {
     }
   }
 
+  addItem(itemAttrs) {
+    itemAttrs[8] = this.statusMap(itemAttrs[8]); //map status string to number
+    localCache.addItem(itemAttrs);
+  }
+
   updateFilter(event) {
     this.setState({
         [event.target.name]: event.target.value.toLowerCase()
@@ -53,9 +69,20 @@ class App extends Component {
         item => (
           (item.title.toLowerCase().search(titleMatch) !== -1) &&
           (this.state.mediaType === 'all' || this.state.mediaType === item.type) &&
-          (this.statusMap(this.state.mediaStatus) === item.itemStatus)
+          (this.statusMap(this.state.mediaStatus) === item.status)
         )
       )
+  }
+
+  toggleSelecting(event) {
+    if(this.state.isSelecting === true){
+      this.setState({
+        selectedItems: []
+      });
+    }
+    this.setState({
+      isSelecting: !(this.state.isSelecting)
+    });
   }
 
   updateSelected(id) {
@@ -74,15 +101,24 @@ class App extends Component {
 
   render() {
     return (
-      <Container fluid>
-        <Toolbar />
-        <Row>
-          <SearchBar text={this.state.searchText} mediaType={this.state.mediaType} mediaStatus={this.state.mediaStatus} handleChange={this.updateFilter.bind(this)}/>
-          <Col>
-            <MainView items={this.getItems()} updateSelected={this.updateSelected.bind(this)} isSelected={(id) => this.state.selectedItems.includes(id)}/>
-          </Col>
-        </Row>
-      </Container>
+      <BrowserRouter>
+        <Container fluid>
+        <Toolbar isSelecting={this.state.isSelecting} toggleSelecting={this.toggleSelecting}/>
+          <Row>
+            <SearchBar text={this.state.searchText} mediaType={this.state.mediaType} mediaStatus={this.state.mediaStatus} handleChange={this.updateFilter}/>
+            <Col>
+              <Switch>
+                <Route path='/add-item' render={(props) => <AddItem addItem={this.addItem} {...props} />} />
+                <Route
+                  exact path='/'
+                  render={(props) => <MainView items={this.getItems()} isSelecting={this.state.isSelecting} updateSelected={this.updateSelected} isSelected={(id) => this.state.selectedItems.includes(id)} {...props}/> }
+                />
+                <Redirect from='*' to='/' />
+              </Switch>
+            </Col>
+          </Row>
+        </Container>
+      </BrowserRouter>
     );
   }
 }

@@ -3,42 +3,42 @@
     {
      "type": "book",
      "title": "20,000 Leagues Under the Sea",
-     "releaseDate": "1870-07-01T00:00:00.000Z",
-     "creators": {"author": "Jules Verne"},
+     "releaseDate": "1870-07-01",
+     "creators": [["author", "Jules Verne"]],
      "genres": ["science fiction","adventure"],
      "image": "https://upload.wikimedia.org/wikipedia/commons/1/10/Houghton_FC8_V5946_869ve_-_Verne%2C_frontispiece.jpg",
      "comments": ["get hard copy"],
-     "itemStatus": 1
+     "status": 1
     },
     {
      "type": "movie",
      "title": "The Thing",
-     "releaseDate": "1982-07-24T23:00:00.000Z",
-     "creators": {"director": "John Carpenter"},
+     "releaseDate": "1982-07-24",
+     "creators": [["director", "John Carpenter"]],
      "genres": ["science fiction","horror"],
      "image": "https://artfiles.alphacoders.com/995/99557.jpg",
      "comments": ["on netflix"],
-     "itemStatus": 1
+     "status": 1
     },
     {
      "type": "series",
      "title": "Seinfeld",
-     "releaseDate": "1989-06-05T00:00:00.000Z",
-     "creators": {"creator": ["Larry David", "Jerry Seinfeld"]},
+     "releaseDate": "1989-06-05",
+     "creators": [["creator", ["Larry David", "Jerry Seinfeld"]]],
      "genres": ["sitcom"],
      "image": "https://s1.ibtimes.com/sites/www.ibtimes.com/files/styles/v2_article_large/public/2014/07/01/seinfeld.jpg?itok=KayYkMVa",
      "comments": [],
-     "itemStatus": 0
+     "status": 0
     },
     {
      "type": "music",
      "title": "Station to Station",
-     "releaseDate": "1976-02-23T00:00:00.000Z",
-     "creators": {"artist": "David Bowie"},
+     "releaseDate": "1976-02-23",
+     "creators": [["artist", "David Bowie"]],
      "genres": ["art rock", "funk rock", "soul", "R&B", "space rock"],
      "image": "https://upload.wikimedia.org/wikipedia/en/9/97/Station_to_Station_cover.jpg",
      "comments": [],
-     "itemStatus": 1
+     "status": 1
     }
   ]
 }

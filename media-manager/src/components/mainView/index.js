@@ -5,7 +5,9 @@ import { Container, Row, Button } from 'react-bootstrap';
 const MainView = props => {
 
   const toggleSelect = (id, event) => {
-    props.updateSelected(id);
+    if(props.isSelecting){
+      props.updateSelected(id);
+    }
   }
 
   let mediaItems = props.items.map(m => {
