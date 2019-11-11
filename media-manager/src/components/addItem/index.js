@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dropdown, Form, FormControl, Row, Col, Container, Button, Collapse } from 'react-bootstrap';
+import { Form, Row, Col, Container, Button } from 'react-bootstrap';
 
 class AddItem extends Component {
 

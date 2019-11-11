@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Col, Button } from 'react-bootstrap';
+import { Card, Col } from 'react-bootstrap';
 import './style.css';
 
 const MediaItem = props => {
@@ -22,7 +22,7 @@ const MediaItem = props => {
     default:
       icon = ' ';
   }
-  
+
   //get creator info
   //get first creator to appear in props
   let [creatorTitle, creatorName] = ['','Unknown'];

@@ -8,49 +8,50 @@ import SearchBar from '../src/components/searchBar/';
 import Toolbar from '../src/components/toolbar/';
 import ExportMenu from '../src/components/exportMenu/';
 import AddItem from '../src/components/addItem/';
+import ViewItem from '../src/components/viewItem/';
 
 const samplebook = {
   type: 'book',
   title: '20,000 Leagues Under the Sea',
-  releaseDate: new Date(1870, 6),
+  releaseDate: '1870-07-01',
   creators: [['author', 'Jules Verne']],
   genres: ['science fiction','adventure'],
   image: 'https://upload.wikimedia.org/wikipedia/commons/1/10/Houghton_FC8_V5946_869ve_-_Verne%2C_frontispiece.jpg',
   comments: ['get hard copy'],
-  itemStatus: 1 //-1 to read, 0 in progress, 1 completed
+  status: 1 //-1 to read, 0 in progress, 1 completed
 }
 
 const samplemovie = {
   type: 'movie',
   title: 'The Thing',
-  releaseDate: new Date(1982, 6, 25),
+  releaseDate: '1982-06-25',
   creators: [['director', 'John Carpenter']],
   genres: ['science fiction','horror'],
   image: 'https://artfiles.alphacoders.com/995/99557.jpg',
   comments: ['on netflix'],
-  itemStatus: 1
+  status: 1
 }
 
 const sampleseries = {
   type: 'series',
   title: 'Seinfeld',
-  releaseDate: new Date(1982, 6, 25),
+  releaseDate:  '1989-06-05',
   creators: [['creator', ['Larry David', 'Jerry Seinfeld']]],
   genres: ['sitcom'],
   image: 'https://s1.ibtimes.com/sites/www.ibtimes.com/files/styles/v2_article_large/public/2014/07/01/seinfeld.jpg?itok=KayYkMVa',
   comments: [],
-  itemStatus: 0
+  status: 0
 }
 
 const samplemusic = {
   type: 'music',
   title: 'Station to Station',
-  releaseDate: new Date(1976, 1, 23),
+  releaseDate: '1976-02-23',
   creators: [['artist', 'David Bowie']],
   genres: ['art rock', 'funk rock', 'soul', 'R&B', 'space rock'],
   image: 'https://upload.wikimedia.org/wikipedia/en/9/97/Station_to_Station_cover.jpg',
   comments: [],
-  itemStatus: 1
+  status: 1
 }
  
 storiesOf('Media Manager App/Media Item', module)
@@ -80,4 +81,8 @@ storiesOf('Media Manager App/ExportMenu', module).add('default', () => (
 
 storiesOf('Media Manager App/AddItem', module).add('default', () => (
   <AddItem />
+));
+
+storiesOf('Media Manager App/ViewItem', module).add('default', () => (
+  <ViewItem item={samplebook} />
 ));

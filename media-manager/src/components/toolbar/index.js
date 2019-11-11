@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import { Fade, Container, ButtonToolbar, ButtonGroup, DropdownButton, Dropdown, Button, ToggleButton, Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import React from 'react';
+import { Fade, ButtonGroup, Dropdown, Button, ToggleButton, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './style.css';
 import ExportMenu from '../exportMenu/';
 
-const Toolbar = (props) => {
+const Toolbar = (props) => (
 
-  return(
     <Navbar bg="dark" variant="dark" className='mb-2'>
       <Link to='/' as={Navbar.Brand} className='navbar-brand'>🗏 MediaManager</Link>
         <Nav>
@@ -20,12 +19,11 @@ const Toolbar = (props) => {
           <Fade in={props.isSelecting}>
             <ButtonGroup>
               <Button variant='outline-dark' className='nav-link'>Edit</Button>
-              <Button variant='outline-dark' className='nav-link'>Delete</Button>
+              <Button variant='outline-dark' className='nav-link' onClick={props.deleteItem}>Delete</Button>
             </ButtonGroup>
           </Fade>
         </Nav>
     </Navbar>
-  );
-}
+);
 
 export default Toolbar;

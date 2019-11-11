@@ -3,7 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 
 const SearchBar = (props) => (
 
-  <Col xs={3} sm={4} md={3} lg={3} xl={2} className='vh-100 border pt-3 ml-3'>
+  <Col xs={3} sm={4} md={3} lg={3} xl={2} className='vh-100 border pt-3'>
     <Form.Control type='text' name='searchText' placeholder='Search...' className='mb-4' onChange={props.handleChange}/>
 
     <Form.Group as={Row}>

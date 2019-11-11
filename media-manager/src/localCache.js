@@ -2,7 +2,6 @@ class localCache {
 
   constructor() {
     this.media = [];
-    this.images = []; //to be replaced with persistent backend
   }
 
   getAll() {
@@ -27,16 +26,12 @@ class localCache {
     this.media.push(item);
   }
 
-  storeImage(file) {
-    this.images.push(file);
+  deleteItem(item) {
+    const index = this.media.indexOf(item);
+    if (index >= 0){
+      this.media.splice(index,1);
+    }
   }
-
-  getImage(name) {
-    return this.images.filter(file => {
-      return file.name === name
-    });
-  }
- 
 }
 
 export default (new localCache() );
