@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Container, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import * as api from './api';
+const ObjectID = require('mongodb').ObjectID;
 
 class AddItem extends Component {
 
@@ -29,7 +32,7 @@ class AddItem extends Component {
     this.handleAddRole = this.handleAddRole.bind(this);
     this.handleAddName = this.handleAddName.bind(this);
     this.handleAddGenre = this.handleAddGenre.bind(this);
-    this.handleAddItem = this.handleAddItem.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange = event => {
@@ -59,7 +62,8 @@ class AddItem extends Component {
     if (event.keyCode === 13){ //if enter pressed
       const name = event.target.value;
       if (name.length === 0){ //empty name
-        if (this.state.currentNames.length > 0){
+        let currentNames = this.state.currentNames;
+        if (currentNames.length > 0){
           this.state.creators.push([this.state.currentRole, ...this.state.currentNames]);
           this.setState({
             addingRole: true,
@@ -102,15 +106,30 @@ class AddItem extends Component {
     }
   }
 
+//  handleFileInput = event => {
+//    if (event.target.files && event.target.files[0]){
+//      const reader = new FileReader();
+//      reader.onload = e => {
+//        this.setState({
+//          coverSrc: e.target.result 
+//        });
+//      }
+//      reader.readAsDataURL(event.target.files[0]);
+//      this.setState({
+//        filename: event.target.files[0].name
+//      });
+//    }
+//  }
+
   handleFileInput = event => {
     if (event.target.files && event.target.files[0]){
       const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
       reader.onload = e => {
         this.setState({
-          coverSrc: e.target.result 
+          coverSrc: e.target.result
         });
       }
-      reader.readAsDataURL(event.target.files[0]);
       this.setState({
         filename: event.target.files[0].name
       });
@@ -135,16 +154,62 @@ class AddItem extends Component {
     }
   }
 
-  handleAddItem() {
-    if(this.state.title.length > 0){
-      const { mediaType, title, date, creators, genres, 
-        coverSrcFormat, coverSrc, comments, mediaStatus } = this.state;
-      this.props.addItem([mediaType, title, date, creators,
-        genres, coverSrcFormat, coverSrc, comments, mediaStatus]); 
+  //handleAddItem() {
+  //  if(this.state.title.length > 0){
+  //    const { mediaType, title, date, creators, genres, 
+  //      coverSrcFormat, coverSrc, comments, mediaStatus } = this.state;
+  //    this.props.addItem([mediaType, title, date, creators,
+  //      genres, coverSrcFormat, coverSrc, comments, mediaStatus]); 
 
+  //    if(this.state.currentNames.length > 0){ //enter creator role if left unfinished
+  //      this.state.creators.push([this.state.currentRole, ...this.state.currentNames]);
+  //    }
+  //  }
+  //}
+
+  mapStatus(statusString){
+    switch(statusString){
+      case 'queued':
+        return -1;
+      case 'in progress':
+        return 0;
+      case 'completed':
+        return 1;
+      default:
+        return -1
+    }
+  }
+
+  formatCreators(){
+    let creators = this.state.creators.slice();
+    this.state.creators = [];
+    for(let r=0;r<creators.length;r++){ //for every role
+      let role = creators[r][0];
+      for(let n=1;n<creators[r].length;n++){ //for every name
+        console.log(role+' '+creators[r][n])
+        this.state.creators.push({role:role, name:creators[r][n]});
+      }
+    }
+  }
+
+  handleSubmit(){
+    if(this.state.title.length > 0){
       if(this.state.currentNames.length > 0){ //enter creator role if left unfinished
         this.state.creators.push([this.state.currentRole, ...this.state.currentNames]);
       }
+      this.formatCreators();
+      console.log(this.state.creators);
+      const item = {
+        _id: new ObjectID(),
+        title: this.state.title,
+        type: this.state.type,
+        releaseDate: this.state.date,
+        creators: this.state.creators,
+        genres: this.state.genres,
+        comments: this.state.comments,
+        status: this.mapStatus(this.state.mediaStatus)
+      }
+      api.addItem(item, this.state.coverSrc);
     }
   }
 
@@ -176,6 +241,7 @@ class AddItem extends Component {
             <Form.Control type='date' name='date' onChange={this.handleChange}/>
           </Col>
         </Form.Group>
+
         {/*creators input*/}
         <Form.Group as={Row}>
           <Form.Label column sm={3}>Creators:</Form.Label>
@@ -251,11 +317,11 @@ class AddItem extends Component {
           <Form.Group as={Row} className='align-items-center'>
             <Form.Label as="legend" column sm={3}>Status:</Form.Label>
             <Col sm={9}>
-              <Form.Check inline id='statusRadio1' type="radio" label="Queued" name='mediaStatus' value='queued'
+              <Form.Check inline id='addStatusRadio1' type="radio" label="Queued" name='mediaStatus' value='queued'
                checked={this.state.mediaStatus === 'queued'} onChange={this.handleChange}/>
-              <Form.Check inline id='statusRadio2' type="radio" label="In Progress" name='mediaStatus' value='in progress'
+              <Form.Check inline id='addStatusRadio2' type="radio" label="In Progress" name='mediaStatus' value='in progress'
                checked={this.state.mediaStatus === 'in progress'} onChange={this.handleChange}/>
-              <Form.Check inline id='statusRadio3' type="radio" label="Completed" name='mediaStatus' value='completed'
+              <Form.Check inline id='addStatusRadio3' type="radio" label="Completed" name='mediaStatus' value='completed'
                checked={this.state.mediaStatus === 'completed'} onChange={this.handleChange}/>
             </Col>
           </Form.Group>
@@ -273,7 +339,7 @@ class AddItem extends Component {
         {/*submit button*/}
         <Form.Group as={Row}>
           <Col sm={{ span: 9, offset: 3 }}>
-            <Button onClick={this.handleAddItem}>Add</Button>
+            <Link to='/' onClick={this.handleSubmit} className='btn btn-primary'>Add</Link>
           </Col>
         </Form.Group>
 

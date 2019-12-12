@@ -6,9 +6,8 @@ import SearchBar from './components/searchBar/';
 import MainView from './components/mainView/';
 import AddItem from './components/addItem/';
 import ViewItem from './components/viewItem/';
-import './App.scss';
-import localCache from './localCache';
-import request from "superagent";
+
+import * as api from './api';
 
 class App extends Component {
 
@@ -20,27 +19,26 @@ class App extends Component {
       selectedItems: [],
       searchText: '',
       mediaType: 'all',
-      mediaStatus: 'in progress'
+      mediaStatus: 'in progress',
+      media: [],
+      images: []
     };
 
     this.updateFilter = this.updateFilter.bind(this);
     this.toggleSelecting = this.toggleSelecting.bind(this);
     this.updateSelected = this.updateSelected.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
-    this.addItem = this.addItem.bind(this);
+    //this.deleteItem = this.deleteItem.bind(this);
+    //this.addItem = this.addItem.bind(this);
   }
 
   componentDidMount(){
-    request.get("http://localhost:3001/media").end((error, res) => {
-      if (res) {
-        let media = JSON.parse(res.text);
-        localCache.populate(media);
-        this.setState({});
-      } else {
-        console.log(error);
-      }
-    });
-  }
+    api.getAll().then(resp => {
+      this.setState({
+        media: resp.media,
+        images: resp.images
+      });
+    }).catch(console.error);
+  };
 
   statusMap(statusName) { //map status name to database status value
     switch (statusName){
@@ -55,17 +53,17 @@ class App extends Component {
     }
   }
 
-  addItem(itemAttrs) {
-    itemAttrs[8] = this.statusMap(itemAttrs[8]); //map status string to number
-    localCache.addItem(itemAttrs);
-  }
-  
-  deleteItem(){
-    for (let item in this.state.selectedItems){
-      localCache.deleteItem(this.getItem(this.state.selectedItems[item]));
-    }
-    this.setState({});
-  }
+  //addItem(itemAttrs) {
+  //  itemAttrs[8] = this.statusMap(itemAttrs[8]); //map status string to number
+  //  localCache.addItem(itemAttrs);
+  //}
+  //
+  //deleteItem(){
+  //  for (let item in this.state.selectedItems){
+  //    localCache.deleteItem(this.getItem(this.state.selectedItems[item]));
+  //  }
+  //  this.setState({});
+  //}
 
   updateFilter(event) {
     this.setState({
@@ -74,21 +72,31 @@ class App extends Component {
   }
 
   getItems = () => {
-    let titleMatch = new RegExp('\\b'+this.state.searchText); //match only from start of words
-    return localCache.getAll()
-      .filter(
-        item => (
-          (item.title.toLowerCase().search(titleMatch) !== -1) &&
-          (this.state.mediaType === 'all' || this.state.mediaType === item.type) &&
-          (this.statusMap(this.state.mediaStatus) === item.status)
+    if (this.state.media && this.state.media.length > 0){
+      let titleMatch = new RegExp('\\b'+this.state.searchText); //match only from start of words
+      return this.state.media
+        .filter(
+          item => (
+            (item.title.toLowerCase().search(titleMatch) !== -1) &&
+            (this.state.mediaType === 'all' || this.state.mediaType === item.type) &&
+            (this.statusMap(this.state.mediaStatus) === item.status)
+          )
         )
-      )
+    }
   }
 
   getItem = (id) => ( //get item by url id
-    localCache.getAll()
+    this.state.media
       .filter(item => item.title.toLowerCase().replace(/[^\w^\d]/g,'-')+'-'+item.type+'-'+item.releaseDate === id)[0]
   );
+
+  //return image for media in base64
+  getImage = (_id) => {
+    const images = this.state.images;
+    for (let i=0;i<images.length;i++){
+      if (images[i].media === _id) return images[i].data;
+    }
+  };
 
   toggleSelecting(event) {
     if(this.state.isSelecting === true){
@@ -124,11 +132,11 @@ class App extends Component {
             <SearchBar text={this.state.searchText} mediaType={this.state.mediaType} mediaStatus={this.state.mediaStatus} handleChange={this.updateFilter} id='search-bar'/>
             <Col>
               <Switch>
-                <Route path='/add-item' render={(props) => <AddItem addItem={this.addItem} {...props} />} />
-                <Route path='/item/:id' render={(props) => <ViewItem getItem={this.getItem} {...props} />} />
+                <Route exact path='/add-item' render={(props) => <AddItem addItem={this.addItem} {...props} />} />
+                <Route exact path='/item/:id' render={(props) => <ViewItem getItem={this.getItem} getImage={this.getImage} {...props} />} />
                 <Route
                   exact path='/'
-                  render={(props) => <MainView items={this.getItems()} isSelecting={this.state.isSelecting} updateSelected={this.updateSelected} isSelected={(id) => this.state.selectedItems.includes(id)} {...props}/> }
+                  render={(props) => <MainView items={this.getItems()} isSelecting={this.state.isSelecting} updateSelected={this.updateSelected} isSelected={(id) => this.state.selectedItems.includes(id)} getImage={this.getImage} {...props}/> }
                 />
                 <Redirect from='*' to='/' />
               </Switch>

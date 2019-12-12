@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import './style.css';
 import ExportMenu from '../exportMenu/';
 
-const Toolbar = (props) => (
+const Toolbar = (props) => {
 
+
+  return(
     <Navbar bg="dark" variant="dark" className='mb-2'>
       <Link to='/' as={Navbar.Brand} className='navbar-brand'>🗏 MediaManager</Link>
         <Nav>
-          <Link to='add-item' id='add-item-link' className='nav-link' >New Item</Link>
+          <Link to='/add-item' id='add-item-link' className='nav-link' >New Item</Link>
           <Dropdown title='Export' as={NavDropdown}>
             <Dropdown.Menu as={ExportMenu} />
           </Dropdown>
@@ -24,6 +26,7 @@ const Toolbar = (props) => (
           </Fade>
         </Nav>
     </Navbar>
-);
+  );
+}
 
 export default Toolbar;
