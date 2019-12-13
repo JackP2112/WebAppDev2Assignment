@@ -1,6 +1,7 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
+import * as api from './api';
 
 const ViewItem = (props) => {
 
@@ -18,10 +19,6 @@ const ViewItem = (props) => {
       for (let i=0;i<creators.length;i++){ //for every creator
         if (creators[i].role !== role){ //if role not same as previous
           role = creators[i].role;
-          if (creatorLines.length > 0){
-            console.log('running')
-            creatorLines[creatorLines.length-1] = creatorLines[creatorLines.length-1].slice(0,-2); //trim trailing comma
-          }
           creatorLines.push(role[0].toUpperCase()+role.slice(1).toLowerCase()+': ');
         }
         creatorLines[creatorLines.length-1] += creators[i].name+', ';
@@ -38,6 +35,10 @@ const ViewItem = (props) => {
     }
   }
 
+  function deleteItem(){
+    api.deleteItem(item);
+  }
+
   let imageString = '';
   if(item){
     imageString = props.getImage(item._id);
@@ -52,12 +53,13 @@ const ViewItem = (props) => {
           </Col>
           <Col>
             <h2>{item.title}</h2>
-            <p className='text-muted'>{item.releaseDate}</p>
-            {printCreators().map(line => <p>{line}</p>)}
+            {item.releaseDate && <p className='text-muted'>{item.releaseDate}</p>}
+            {item.creators.length > 0 && printCreators().map(line => <p>{line}</p>)}
             <h5>Genres:</h5>
             <p>{printGenres()}</p>
             <h5>Comments:</h5>
             {item.comments.map(comment => <p key={comment}>{comment}</p>)}
+            <Link to='/' className='btn btn-outline-danger' onClick={deleteItem}>Delete</Link>
           </Col>
         </Row>
       }

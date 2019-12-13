@@ -106,21 +106,6 @@ class AddItem extends Component {
     }
   }
 
-//  handleFileInput = event => {
-//    if (event.target.files && event.target.files[0]){
-//      const reader = new FileReader();
-//      reader.onload = e => {
-//        this.setState({
-//          coverSrc: e.target.result 
-//        });
-//      }
-//      reader.readAsDataURL(event.target.files[0]);
-//      this.setState({
-//        filename: event.target.files[0].name
-//      });
-//    }
-//  }
-
   handleFileInput = event => {
     if (event.target.files && event.target.files[0]){
       const reader = new FileReader();
@@ -153,19 +138,6 @@ class AddItem extends Component {
       this.setState({});
     }
   }
-
-  //handleAddItem() {
-  //  if(this.state.title.length > 0){
-  //    const { mediaType, title, date, creators, genres, 
-  //      coverSrcFormat, coverSrc, comments, mediaStatus } = this.state;
-  //    this.props.addItem([mediaType, title, date, creators,
-  //      genres, coverSrcFormat, coverSrc, comments, mediaStatus]); 
-
-  //    if(this.state.currentNames.length > 0){ //enter creator role if left unfinished
-  //      this.state.creators.push([this.state.currentRole, ...this.state.currentNames]);
-  //    }
-  //  }
-  //}
 
   mapStatus(statusString){
     switch(statusString){

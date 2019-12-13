@@ -23,6 +23,27 @@ router.post('/', asyncHandler(async (req, res) => {
   res.status(201).json(mediaItem);
 }));
 
+//Update a media item
+router.put('/:id', asyncHandler(async (req,res) => {
+  if (req.body._id) delete req.body._id;
+  const item = await Media.findOneAndUpdate({'_id': req.params.id},
+    req.body,
+    {upsert: false}
+  );
+  if (!item) return res.sendStatus(404);
+  return res.json(200, item);
+}));
+
+//Delete a media item
+router.delete('/:id', asyncHandler(async (req,res) => {
+  const item = await Media.findById(req.params.id);
+  const image = await Image.find({'media':req.params.id});
+  if (!item || !image) return res.send(404);
+  await item.remove();
+  await image.remove();
+  return res.status(204).send(item);
+}));
+
 function handleError(res, err){
   return res.send(500, err);
 };

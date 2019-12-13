@@ -4,7 +4,8 @@
   "description": "front end and mongoDB api",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --ignore media-manager/ --exec babel-node index.js"
+    "start": "nodemon --ignore media-manager/ --exec babel-node index.js",
+    "unit-test": "cross-env NODE_ENV=test mocha './api/**/tests/*.js' --require babel-core/register --require babel-polyfill --exit"
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,17 @@
   "homepage": "https://github.com/JackP2112/WebAppDev2Assignment#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "nodemon": "^2.0.1"
+    "cross-env": "^6.0.3",
+    "mocha": "^6.2.2",
+    "mockgoose": "^8.0.4",
+    "nodemon": "^2.0.1",
+    "should": "^13.2.3",
+    "sinon": "^7.5.0",
+    "sinon-test": "^2.4.1",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

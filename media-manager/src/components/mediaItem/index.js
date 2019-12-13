@@ -41,7 +41,6 @@ const MediaItem = props => {
   //  }
   //}
 
-  console.log(props.item);
   let [creatorRole, creatorName] = ['','Unknown'];
   const creators = props.item.creators;
   if(creators.length > 0){

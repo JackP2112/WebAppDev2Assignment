@@ -53,18 +53,6 @@ class App extends Component {
     }
   }
 
-  //addItem(itemAttrs) {
-  //  itemAttrs[8] = this.statusMap(itemAttrs[8]); //map status string to number
-  //  localCache.addItem(itemAttrs);
-  //}
-  //
-  //deleteItem(){
-  //  for (let item in this.state.selectedItems){
-  //    localCache.deleteItem(this.getItem(this.state.selectedItems[item]));
-  //  }
-  //  this.setState({});
-  //}
-
   updateFilter(event) {
     this.setState({
         [event.target.name]: event.target.value.toLowerCase()
