@@ -4,7 +4,7 @@ Name: Jack Power
 
 ## Overview.
 
-The app is a media manager designed to keep track of all kinds of media. It allows you to catalogue media such as books, movies and series based on their relevant attributes. You can then filter based on these and the media status, a ternary state indicating if you have queued, are currently consuming, or have completed said media. Less generically, for a book for example, it indicates that you are either going to read, currently reading, or have read the book. Ideally the app will be hooked into a back-end server which will allow persistance of media and its status.
+The app is a media manager designed to keep track of all kinds of media. It allows you to catalogue media such as books, movies and series based on their relevant attributes. You can then filter based on these and the media status, a ternary state indicating if you have queued, are currently consuming, or have completed said media. Less generically, for a book for example, it indicates that you are either going to read, currently reading, or have read the book. The app now persists data to a mongoDB back end with most CRUD functionality.
 
 ### Features
 
@@ -14,13 +14,15 @@ The app is a media manager designed to keep track of all kinds of media. It allo
 
 - View media attributes
 
-- Multiple select and subsequent deletion (in future also can update)
+- Delete media
 
 ### Other future features
 
 - Export selected media to JSON or copy titles to clipboard
 
 - Option to automatically fetch media data from web on creation
+
+- Multiple select and subsequent deletion or mass update
 
 ## Setup.
 
@@ -30,19 +32,19 @@ The app is a media manager designed to keep track of all kinds of media. It allo
 git clone https://github.com/JackP2112/WebAppDev2Assignment
 ~~~
 
-- Run npm install to install dependencies
+- Run npm install to install dependencies, there are now two package.json files to install for front and back end
 
 ~~~
 npm install
 ~~~
 
-- Start the JSON server on port 3001 from the project root (where media.json is)
+- Install mongoDB and run the mongod server, db here in the project root
 
 ~~~
-json-server media.json -p 3001
+mongod --dbpath db
 ~~~
 
-- Start the node server and run the app
+- Start both the back and front end from their respective roots
 
 ~~~
 npm run start
@@ -50,18 +52,27 @@ npm run start
 
 ## Data Model Design.
 
-The data model consists only of media items. Each item is a JavaScript object of the same format seen below. The types are predefined in the program with the hope of eventually being extensible by the user. The creators array contains a nested array for each creator role, i.e., director, writer etc. The image link currently may be a URL or a JavaScript file uploaded on creation. This eventually will be replaced with back-end server interaction.
+The data model consists of media items and their associated cover images. Each item is a JavaScript object of the same format seen below. The types are predefined in the program with the hope of eventually being extensible by the user. Creators are stored in an array of embedded documents, each having a role and a name. The image has been extracted into its own document to improve the readability of the model and to avoid carrying the large amount of data where it is not needed.
 
 ~~~
 {
      "type": "book",
      "title": "20,000 Leagues Under the Sea",
      "releaseDate": "1870-07-01",
-     "creators": [["author", "Jules Verne"]],
+     "creators": [
+          {
+               "role": "author",
+               "name": "Jules Verne"
+          }
+     ]
      "genres": ["science fiction","adventure"],
-     "image": "https://upload.wikimedia.org/wikipedia/commons/1/10/Houghton_FC8_V5946_869ve_-_Verne%2C_frontispiece.jpg",
      "comments": ["get hard copy"],
      "status": 1
+}
+
+{
+     "media": "mongo-id-of-media",
+     "data": "base64-image-data"
 }
 ~~~
 
@@ -113,7 +124,7 @@ The data model consists only of media items. Each item is a JavaScript object of
 
 ## Backend.
 
-A JSON-server supplies premade media objects to the app on start. The source JSON was intended to be made dynamic but time constraints prohibited this. Ultimately this will be replaced with a more sophisticated back-end server that will allow full CRUD.
+An express back end allows routing to interact with a mongoDB database. RESTful http requests created via axios specify CRUD actions to be performed on the database. Payloads are divided between the media items and image data which are kept in sync by the backend.
 
 
 [main]: ./img/main.png
